@@ -1,0 +1,27 @@
+<html>
+    <head>
+      <title> Project 2 </title>
+
+      <script id="volume_vs" type="x-shader/x-vertex">
+        precision highp float;
+        precision highp float;
+        attribute vec3 vp;
+
+        void main(void){
+           gl_Position = vec4(vp, 1.0);
+        }
+      </script>
+
+      <script id="volume_fs" type="x-shader/x-fragment">
+        precision highp float;
+      </script>
+      
+    </head>
+
+    <body>
+
+      <div id ="terminal"></div>
+      
+    </body>
+
+</html>
