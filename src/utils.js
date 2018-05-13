@@ -1,4 +1,3 @@
-
 function readFile(filename, callback, nocache, progress, headers){
     let http = new XMLHttpRequest();
     let total = 0;
@@ -52,4 +51,30 @@ function readFile(filename, callback, nocache, progress, headers){
         http.setRequestHeader(key, headers[key]);
 
     http.send(null);
+}
+
+function getSearchVariable(variable, defaultVal) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if (unescape(pair[0]) == variable) {
+            return unescape(pair[1]);
+        }
+    }
+    return defaultVal;
+}
+
+//Get some data stored in a script element
+function getSourceFromElement(id) {
+    var script = document.getElementById(id);
+    if (!script) return null;
+    var str = "";
+    var k = script.firstChild;
+    while (k) {
+        if (k.nodeType == 3)
+            str += k.textContent;
+        k = k.nextSibling;
+    }
+    return str;
 }
