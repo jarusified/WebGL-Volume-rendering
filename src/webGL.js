@@ -35,9 +35,9 @@ WebGL.prototype.setMatrices = function() {
 WebGL.prototype.initDraw2d = function() {
     this.gl.viewport(this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height);
 
-    this.gl.enableVertexAttribArray(this.program.attributes["aVertexPosition"]);
+    this.gl.enableVertexAttribArray(this.program.attributes["vp"]);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexPositionBuffer);
-    this.gl.vertexAttribPointer(this.program.attributes["aVertexPosition"], this.vertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribPointer(this.program.attributes["vp"], this.vertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
 
     if (this.program.attributes["aTextureCoord"]) {
         this.gl.enableVertexAttribArray(this.program.attributes["aTextureCoord"]);
@@ -112,17 +112,12 @@ WebGL.prototype.use = function(program) {
         this.gl.useProgram(this.program.program);
 }
 
-  /**
-   * @constructor
-   */
+
 //Program object
 function WebGLProgram(gl, vs, fs) {
-    //Can be passed source directly or script tag
     this.program = null;
-    console.log(getSourceFromElement(vs));
-    if (vs.indexOf("main") < 0) vs = getSourceFromElement(vs);
-    if (fs.indexOf("main") < 0) fs = getSourceFromElement(fs);
-    //Pass in vertex shader, fragment shaders...
+    vs = getSourceFromElement(vs);
+    fs = getSourceFromElement(fs);
     this.gl = gl;
     if (this.program && this.gl.isProgram(this.program))
     {

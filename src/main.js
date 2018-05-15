@@ -1,13 +1,14 @@
 function init(){
+    window.onresize = autoResize;
     var json = "default.json"
     readFile(decodeURI(json), loadData, true);
+
 }
 
 
 function loadData(src, fn){
     var parsed = JSON.parse(src);
     if (parsed.volume) {
-        //Old data format
         state = {}
         state.properties = {};
         state.colourmaps = [{}];
@@ -15,8 +16,7 @@ function loadData(src, fn){
         view = {};
         state.views = [view];
         state.objects = [object];
-        //Copy fields to their new locations
-        //Objects
+
         object.name = "volume";
         object.samples = parsed.volume.properties.samples;
         object.isovalue = parsed.volume.properties.isovalue;
@@ -26,7 +26,8 @@ function loadData(src, fn){
         object.colour = parsed.volume.properties.isocolour;
         object.density = parsed.volume.properties.density;
         object.power = parsed.volume.properties.power;
-        if (parsed.volume.properties.usecolourmap) object.colourmap = 0;
+        if (parsed.volume.properties.usecolormap)
+            object.colormap = 0;
         object.tricubicfilter = parsed.volume.properties.tricubicFilter;
         object.zmin = parsed.volume.properties.Zmin;
         object.zmax = parsed.volume.properties.Zmax;
@@ -36,44 +37,35 @@ function loadData(src, fn){
         object.xmax = parsed.volume.properties.Xmax;
         object.brightness = parsed.volume.properties.brightness;
         object.contrast = parsed.volume.properties.contrast;
-        //The volume data sub-object
+        
         object.volume = {};
         object.volume.url = parsed.url;
         object.volume.res = parsed.res;
         object.volume.scale = parsed.scale;
-        //The slicer properties
+
         object.slices = parsed.slicer;
-        //Properties - global rendering properties
+
         state.properties.nogui = parsed.nogui;
-        //Views - single only in old data
+
         view.axes = parsed.volume.properties.axes;
         view.border = parsed.volume.properties.border;
         view.translate = parsed.volume.translate;
         view.rotate = parsed.volume.rotate;
         view.focus = parsed.volume.focus;
 
-        //Colourmap
-        colours.read(parsed.volume.colourmap);
-        colours.update();
-        state.colourmaps = [colours.palette.get()];
-        delete state.colourmaps[0].background;
-        state.properties.background = colours.palette.background.html();
+        colors.read(parsed.volume.colormap);
+        colors.update();
+        state.colormaps = [colors.palette.get()];
+        delete state.colormaps[0].background;
+        state.properties.background = colors.palette.background.html();
     } else {
-        //New format - LavaVu compatible
         state = parsed;
     }
 
-    reset = state; //Store orig for reset
-    //Storage reset?
-    if (getSearchVariable("reset")) {localStorage.removeItem(fn); console.log("Storage cleared");}
-    /* LOCALSTORAGE DISABLED
-    //Load any stored presets for this file
-    filename = fn;
-    loadStoredData(fn);
-    */
+    reset = state; 
 
-    //Setup default props from original data...
-    //state.objects = reset.objects;
+    if (getSearchVariable("reset")) {localStorage.removeItem(fn); console.log("Storage cleared");}
+
     if (!state.objects[0].volume.res) state.objects[0].volume.res = [256, 256, 256];
     if (!state.objects[0].volume.scale) state.objects[0].volume.scale = [1.0, 1.0, 1.0];
     
@@ -126,6 +118,11 @@ function loadImage(imageURI, callback){
 
 function render(image, ctx){
     console.log("Rendering begins");
-    volume = new Volume(image, ctx);
+    volume = new Volume(state.objects[0], image, ctx);
+    volume.draw();
 }
 
+
+function autoResize(){
+
+}

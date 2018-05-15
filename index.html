@@ -12,42 +12,43 @@
         }
       </script>
 
-      <script id="volume_fs" type="x-shader/x-fragment">
-        precision highp float;
+      <script id="volume_fs" type="x-shader/x-fragment" src="shaders/volume_fs.frag">
+
       </script>
-      
-      <script id="line-vs" type="x-shader/x-vertex">
+      <script id="line-vs" type="x-shader/x-vertex" src="shaders/line.vert">
+        #ifdef GL_ES
         precision highp float;
-        //Line vertex shader
+        #endif
+
         precision highp float;
-        attribute vec3 aVertexPosition;
-        attribute vec4 aVertexColour;
+        attribute vec3 vp;
+        attribute vec4 vc;
         uniform mat4 uMVMatrix;
         uniform mat4 uPMatrix;
-        uniform vec4 uColour;
+        uniform vec4 uColor;
         uniform float uAlpha;
-        varying vec4 vColour;
+        varying vec4 vColor;
         void main(void)
         {
-        vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+        vec4 mvPosition = uMVMatrix * vec4(vp, 1.0);
         gl_Position = uPMatrix * mvPosition;
-        vec4 colour = aVertexColour;
+        vec4 color = vc;
         float alpha = 1.0;
-        if (uColour.a > 0.01) colour = uColour;
+        if (uColor.a > 0.01) color = uColor;
         if (uAlpha > 0.01) alpha = uAlpha;
-        vColour = vec4(colour.rgb, colour.a * alpha);
+        vColor = vec4(color.rgb, color.a * alpha);
         }
-      </script>
 
-      <script id="line-fs" type="x-shader/x-fragment">
+      </script>
+      <script id="line-fs" type="x-shader/x-fragment" src="shaders/line.frag">
         precision highp float;
-        //Line fragment shader
-        precision highp float;
-        varying vec4 vColour;
+
+        varying vec4 vColor;
         void main(void)
         {
-        gl_FragColor = vColour;
+        gl_FragColor = vColor;
         }
+
       </script>
       
     
@@ -58,7 +59,12 @@
     <script type="text/javascript" src="libs/gl-matrix.js"></script>
     <script type="text/javascript" src="src/viewMatrix.js"></script>
     <script type="text/javascript" src="src/utils.js"></script> 
+    <script type="text/javascript" src="src/mouse.js"></script>
+    <script type="text/javascript" src="src/color.js"></script>
     <script type="text/javascript" src="src/webGL.js"></script>
+
+
+
     <script type="text/javascript" src="src/main.js"></script>
     <script type="text/javascript" src="src/volume.js"></script>      
     <body onload="init();">

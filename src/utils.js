@@ -78,3 +78,12 @@ function getSourceFromElement(id) {
     }
     return str;
 }
+
+function getSourceFromShaders(id){
+    var script = document.getElementById(id);
+    if( !script) return null;
+    readFile(script.getAttribute('src'), function(res){
+        console.log(res);
+        return res;
+    });
+}
