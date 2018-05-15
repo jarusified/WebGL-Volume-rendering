@@ -112,7 +112,6 @@ WebGL.prototype.use = function(program) {
         this.gl.useProgram(this.program.program);
 }
 
-
 //Program object
 function WebGLProgram(gl, vs, fs) {
     this.program = null;
@@ -177,5 +176,3 @@ WebGLProgram.prototype.setup = function(attributes, uniforms, noenable) {
     this.pMatrixUniform = this.gl.getUniformLocation(this.program, "uPMatrix");
     this.nMatrixUniform = this.gl.getUniformLocation(this.program, "uNMatrix");
 }
-
-
