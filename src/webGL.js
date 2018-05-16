@@ -7,8 +7,8 @@ function WebGL(canvas, options) {
 
     if (!window.WebGLRenderingContext) throw "No browser WebGL support";
 
-    // Try to grab the standard context. If it fails, fallback to experimental.
     try {
+        console.log(canvas);
         this.gl = canvas.getContext("webgl", options) || canvas.getContext("experimental-webgl", options);
     } catch (e) {
         console.log("detectGL exception: " + e);
@@ -16,9 +16,12 @@ function WebGL(canvas, options) {
     }
     this.viewport = new Viewport(0, 0, canvas.width, canvas.height);
     if (!this.gl) throw "Failed to get context";
+
 }
 
 WebGL.prototype.setMatrices = function() {
+
+    console.log(this.modelView.matrix, this.perspective.matrix);
     //Model view matrix
     this.gl.uniformMatrix4fv(this.program.mvMatrixUniform, false, this.modelView.matrix);
     //Perspective matrix
@@ -35,9 +38,9 @@ WebGL.prototype.setMatrices = function() {
 WebGL.prototype.initDraw2d = function() {
     this.gl.viewport(this.viewport.x, this.viewport.y, this.viewport.width, this.viewport.height);
 
-    this.gl.enableVertexAttribArray(this.program.attributes["vp"]);
+    this.gl.enableVertexAttribArray(this.program.attributes["aVertexPosition"]);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexPositionBuffer);
-    this.gl.vertexAttribPointer(this.program.attributes["vp"], this.vertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
+    this.gl.vertexAttribPointer(this.program.attributes["aVertexPosition"], this.vertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
 
     if (this.program.attributes["aTextureCoord"]) {
         this.gl.enableVertexAttribArray(this.program.attributes["aTextureCoord"]);
@@ -113,10 +116,12 @@ WebGL.prototype.use = function(program) {
 }
 
 //Program object
-function WebGLProgram(gl, vs, fs) {
+function WebGLProgram(gl, vs, fs, defines) {
     this.program = null;
     vs = getSourceFromElement(vs);
     fs = getSourceFromElement(fs);
+    if(defines != undefined)
+        fs = defines + fs;
     this.gl = gl;
     if (this.program && this.gl.isProgram(this.program))
     {
