@@ -184,13 +184,13 @@ function imageLoaded(image) {
     if (state.objects[0].volume) {
         interactive = true;
         volume = new Volume(state.objects[0], image, interactive);
-        volume.slicer = slicer; //For axis position
+//        volume.slicer = slicer; //For axis position
     }
 
     
-    gradientEditor.read(state.colourmaps[0].colours);
-    gradientEditor.palette.background = new Color(state.properties.background);
-    gradientEditor.update(updateColourmap);
+    // gradientEditor.read(state.colourmaps[0].colours);
+    // gradientEditor.palette.background = new Color(state.properties.background);
+    // gradientEditor.update(updateColourmap);
 
     if (!state.properties.nogui) {
         var gui = new dat.GUI();

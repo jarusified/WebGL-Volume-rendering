@@ -29,7 +29,7 @@ function Slicer(props, image, filter, parentEl) {
     this.canvas = document.createElement("canvas");
     this.canvas.style.cssText = "position: absolute; bottom: 0px; margin: 0px; padding: 0px; border: none; background: rgba(0,0,0,0); pointer-events: none;";
 
-    this.doLayout();
+//    this.doLayout();
 
     this.canvas.mouse = new Mouse(this.canvas, this);
 
@@ -129,17 +129,17 @@ Slicer.prototype.doLayout = function() {
         case 'X':
             rotate = 90;
         case 'x':
-            addViewer(0);
+            //            addViewer(0);
             break;
         case 'Y':
             rotate = 90;
         case 'y':
-            addViewer(1);
+            //           addViewer(1);
             break;
         case 'Z':
             rotate = 90;
         case 'z':
-            addViewer(2);
+            //            addViewer(2);
             break;
         case '|':
             y = 0;

@@ -87,3 +87,10 @@ function getSourceFromShaders(id){
         return res;
     });
 }
+
+function removeChildren(element) {
+    if (element.hasChildNodes()) {
+        while (element.childNodes.length > 0)
+            element.removeChild(element.firstChild);
+    }
+}
